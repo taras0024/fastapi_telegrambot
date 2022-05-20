@@ -1,0 +1,25 @@
+version: "3.5"
+services:
+  postgres-db:
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    volumes:
+      - ./postgres-data/:/var/lib/postgresql/data/
+    networks:
+      - default
+
+#  mongo-db:
+#    image: mongo:latest
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+#      MONGO_INITDB_DATABASE: mongo
+#    ports:
+#      - 27019:27017
+#    volumes:
+#      - ./mongo-data/data:/data/db
