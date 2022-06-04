@@ -7,7 +7,7 @@ from aiogram.types.message import ParseMode
 from aiogram.utils.markdown import bold, text
 
 import bot.messages as ms
-from config import TOKEN
+from config import TOKEN, MY_ID
 from utils import AsyncContextManager, create_file, get_file, get_files
 
 bot = Bot(token=TOKEN)

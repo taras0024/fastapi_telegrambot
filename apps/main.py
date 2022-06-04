@@ -27,16 +27,10 @@ async def on_startup():
         ]
     )
 
-    # try:
-    #     await dp.bot.send_message(MY_ID, 'Bot started')
-    # except Exception as e:
-    #     print(f'Something went wrong', e)
-
-
-@app.on_event('shutdown')
-async def on_shutdown():
-    await bot.get_session.close()
-    await database.disconnect()
+    try:
+        await dp.bot.send_message(MY_ID, 'Bot started')
+    except Exception as e:
+        print(f'Something went wrong', e)
 
 
 @app.post(WEBHOOK_PATH, tags=['bot'])
@@ -45,3 +39,9 @@ async def bot_webhook(update: dict):
     Dispatcher.set_current(dp)
     Bot.set_current(bot)
     await dp.process_update(telegram_update)
+
+
+@app.on_event('shutdown')
+async def on_shutdown():
+    await bot.get_session.close()
+    await database.disconnect()

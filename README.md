@@ -1,10 +1,10 @@
 ### Database
 
-    docker-compose -f .\docker\docker-compose.postgres.yml up
+    docker-compose -f .\docker\docker-compose.yml up
 
 ### Ngrok: # Open `ngrok.exe` file location in terminal
 
-    ngrko http <port>
+    ngrok http <port>
 
 ### Fill out `.env`
     Example:
@@ -14,6 +14,7 @@
         URL=http://127.0.0.1:8000
         NGROK=https://4f63-91-207-210-143.ngrok.io
 
-### App [`app` - obj of FastAPI; `main`- name of your module]
+### Start app [`app` - obj of FastAPI; `main`- name of your module]
 
-    uvicorn app.main:app --reload
+    uvicorn apps.main:app --reload
+    uvicorn apps.main:app
