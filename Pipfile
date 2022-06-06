@@ -11,10 +11,10 @@ databases = {extras = ["postgresql"], version = "*"}
 aiogram = "*"
 aiohttp = "*"
 pymongo = "*"
-environs = "*"
 psycopg2 = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "*"

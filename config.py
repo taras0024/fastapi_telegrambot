@@ -1,13 +1,14 @@
-from environs import Env
+import os
 
-env = Env()
-env.read_env()
+from dotenv import load_dotenv, find_dotenv
 
-NAME = env.str('NAME')
-TOKEN = env.str('TOKEN')
-MY_ID = env.str('MY_ID')
-NGROK = env.str('NGROK')
-URL = env.str('URL')
+load_dotenv(find_dotenv())
+
+NAME = os.getenv('NAME')
+TOKEN = os.getenv('TOKEN')
+MY_ID = os.getenv('MY_ID')
+NGROK = os.getenv('NGROK')
+URL = os.getenv('URL')
 
 WEBHOOK_PATH = f'/bot/{TOKEN}'
 WEBHOOK_URL = f'{NGROK}{WEBHOOK_PATH}'

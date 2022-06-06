@@ -16,10 +16,12 @@ Base.metadata.create_all(engine)
 async def on_startup():
     await database.connect()
     webhook_info = await bot.get_webhook_info()
+    print(f'{webhook_info.url} === {WEBHOOK_URL}')
     if webhook_info.url != WEBHOOK_URL:
         await bot.set_webhook(
             url=WEBHOOK_URL
         )
+    print(f'{webhook_info.url} === {WEBHOOK_URL}')
     await dp.bot.set_my_commands(
         [
             types.BotCommand('start', 'Start bot'),
@@ -33,7 +35,7 @@ async def on_startup():
         print(f'Something went wrong', e)
 
 
-@app.post(WEBHOOK_PATH, tags=['bot'])
+@app.post('/bot/{token:str}', tags=['bot'])
 async def bot_webhook(update: dict):
     telegram_update = types.Update(**update)
     Dispatcher.set_current(dp)
