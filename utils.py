@@ -1,3 +1,5 @@
+import functools
+
 import aiohttp
 
 from config import URL
@@ -51,3 +53,15 @@ async def get_file(params):
 async def create_file(data):
     async with AsyncContextManager() as s:
         return await s._create_file(data)
+
+
+def exception_handler():
+    def wrapper(func):
+        @functools.wraps(func)
+        async def wrapped(*args):
+            try:
+                return await func(*args)
+            except Exception as e:
+                print(e)
+        return wrapped
+    return wrapper

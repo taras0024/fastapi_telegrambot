@@ -21,11 +21,15 @@ async def create(r: FileIn):  # = Depends()):
     return {**row}
 
 
-@router.get('/{name}', response_model=FileOut)
+# @router.get('/{name}', response_model=FileOut | {})
+@router.get('/{name}')
 async def get_one_by_name(name):
-    query = file_table.select().where(file_table.c.name == name)
-    row = await database.fetch_one(query)
-    return row
+    try:
+        query = file_table.select().where(file_table.c.name == name)
+        row = await database.fetch_one(query)
+        return row
+    except:
+        return {}
 
 
 @router.get('/', response_model=typing.List[FileOut])
