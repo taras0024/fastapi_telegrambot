@@ -3,8 +3,9 @@ from fastapi import FastAPI
 
 from apps.routers import router
 from bot import bot, dp
-from config import MY_ID, WEBHOOK_PATH, WEBHOOK_URL
+from config import MY_ID, TOKEN
 from db import Base, database, engine
+from utils import set_env_ngrok_url
 
 app = FastAPI()
 
@@ -14,6 +15,9 @@ Base.metadata.create_all(engine)
 
 @app.on_event('startup')
 async def on_startup():
+    NGROK_URL = set_env_ngrok_url()
+    WEBHOOK_URL = f'{NGROK_URL}/bot/{TOKEN}'
+
     await database.connect()
     webhook_info = await bot.get_webhook_info()
     print(f'{webhook_info.url} === {WEBHOOK_URL}')
@@ -21,7 +25,6 @@ async def on_startup():
         await bot.set_webhook(
             url=WEBHOOK_URL
         )
-    print(f'{webhook_info.url} === {WEBHOOK_URL}')
     await dp.bot.set_my_commands(
         [
             types.BotCommand('start', 'Start bot'),
@@ -33,6 +36,9 @@ async def on_startup():
         await dp.bot.send_message(MY_ID, 'Bot started')
     except Exception as e:
         print(f'Something went wrong', e)
+
+    webhook_info = await bot.get_webhook_info()
+    print(f'{webhook_info.url} === {WEBHOOK_URL}')
 
 
 @app.post('/bot/{token:str}', tags=['bot'])

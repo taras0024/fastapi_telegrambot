@@ -1,8 +1,19 @@
 import functools
+import json
+import os
 
 import aiohttp
 
-from config import URL
+from config import APP_URL
+
+
+def set_env_ngrok_url():
+    os.system('curl http://ngrok:4040/api/tunnels > tunnels.json')
+    with open('tunnels.json') as file:
+        data = json.load(file)
+
+    os.environ['NGROK_URL'] = data['tunnels'][0]['public_url']
+    return data['tunnels'][0]['public_url']
 
 
 class AsyncContextManager:
@@ -19,7 +30,7 @@ class AsyncContextManager:
 
     async def _create_file(self, data, *args, **kwargs):
         async with self.session.post(
-                url=URL,
+                url=APP_URL,
                 headers={},
                 json=data
         ) as resp:
@@ -27,14 +38,14 @@ class AsyncContextManager:
 
     async def _get_files(self, *args, **kwargs):
         async with self.session.get(
-                url=f'{URL}',
+                url=f'{APP_URL}',
         ) as resp:
             json_response = await resp.json()
             return json_response
 
     async def _get_file(self, params, *args, **kwargs):
         async with self.session.get(
-                url=f'{URL}/{params["name"]}'
+                url=f'{APP_URL}/{params["name"]}'
         ) as resp:
             json_response = await resp.json()
             return json_response
@@ -63,5 +74,7 @@ def exception_handler():
                 return await func(*args)
             except Exception as e:
                 print(e)
+
         return wrapped
+
     return wrapper

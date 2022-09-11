@@ -10,8 +10,11 @@ LOCAL_COMPOSE_FILE ?= ./docker/docker-compose.yml
 # ----------------------------------------------------------------------------------------------------------------------
 #                                           LOCAL
 # ----------------------------------------------------------------------------------------------------------------------
-up:  ## Run docker-compose
-	docker-compose -f ${LOCAL_COMPOSE_FILE} -p bot up -d
+build:  ## Build docker-compose
+	docker-compose -f ${LOCAL_COMPOSE_FILE} build
+
+up:  ## Up docker-compose
+	docker-compose -f ${LOCAL_COMPOSE_FILE} -p bot up
 
 down:  ## Down docker-compose
 	docker-compose -f ${LOCAL_COMPOSE_FILE} -p bot down --volumes --remove-orphans

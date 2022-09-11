@@ -1,16 +1,54 @@
 version: "3.5"
 services:
-  postgres-db:
+  app:
+    image: magistr-app:dev
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    container_name: app
+    restart: always
+    command: >
+      bash -c "
+              ./docker/wait.sh db:5432 -- echo \"db run successfully\" &&
+              ./docker/wait.sh ngrok:4040 -- echo \"ngrok run successfully\" &&
+              find . -name \*.pyc -delete &&
+              
+              sleep 1 &&
+              psql -h db -p 5432 -U postgres -f ./docker/init.sql &&
+              sleep 1 &&
+      
+              uvicorn apps.main:app --proxy-headers --host 0.0.0.0 --port 8000
+              "
+    env_file:
+      - .env
+    volumes:
+      - ../apps/:/magistr/apps/
+      - ../bot/:/magistr/bot/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - ngrok
+    networks:
+      - default
+
+  db:
     image: postgres:14
     container_name: db
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: username
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: postgres
+      POSTGRES_HOST_AUTH_METHOD: "trust"
     networks:
       - default
+
+  ngrok:
+    image: wernight/ngrok
+    container_name: ngrok
+    env_file:
+      - .env
+    ports:
+      - "4040:4040"
 
 networks:
   default:
