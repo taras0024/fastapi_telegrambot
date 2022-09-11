@@ -4,7 +4,7 @@ import os
 
 import aiohttp
 
-from config import APP_URL
+from .settings import APP_URL
 
 
 def set_env_ngrok_url():
