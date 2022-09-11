@@ -1,11 +1,10 @@
 from aiogram import Bot, Dispatcher, types
 from fastapi import FastAPI
 
-from apps.routers import router
-from bot import bot, dp
-from config import MY_ID, TOKEN
-from db import Base, database, engine
-from utils import set_env_ngrok_url
+from .routers import router
+from ..bot import bot, dp
+from ..settings import MY_ID, TOKEN, Base, database, engine
+from ..utils import set_env_ngrok_url
 
 app = FastAPI()
 

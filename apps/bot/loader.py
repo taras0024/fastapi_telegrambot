@@ -6,9 +6,9 @@ from aiogram.types import ChatActions, KeyboardButton, ReplyKeyboardMarkup
 from aiogram.types.message import ParseMode
 from aiogram.utils.markdown import bold, text
 
-import bot.messages as ms
-from config import TOKEN
-from utils import create_file, get_file, get_files, exception_handler
+from . import messages as ms
+from ..settings import TOKEN
+from ..utils import create_file, get_file, get_files, exception_handler
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)

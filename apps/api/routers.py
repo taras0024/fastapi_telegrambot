@@ -2,9 +2,9 @@ import typing
 
 from fastapi import APIRouter, Depends
 
-from apps.models import file_table
-from apps.schemas import FileIn, FileOut, Message
-from db import database
+from .models import file_table
+from .schemas import FileIn, FileOut, Message
+from ..settings import database
 
 router = APIRouter(tags=['files'])
 
