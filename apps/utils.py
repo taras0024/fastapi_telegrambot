@@ -2,9 +2,7 @@ import functools
 import json
 import os
 
-import aiohttp
-
-from .settings import APP_URL
+from .settings import PAGE_COUNT
 
 
 def set_env_ngrok_url():
@@ -16,54 +14,16 @@ def set_env_ngrok_url():
     return data['tunnels'][0]['public_url']
 
 
-class AsyncContextManager:
-    def __init__(self):
-        self.session = None
+def paginate(iterable, _previous=0, _next=0):
+    _count = len(iterable) if iterable else 0
+    _page = _previous + _next
+    MAX_PAGE = _count % PAGE_COUNT and _count // PAGE_COUNT + _count % PAGE_COUNT or _count // PAGE_COUNT
 
-    async def __aenter__(self):
-        self.session = aiohttp.ClientSession()
-        return self
+    result = iterable and iterable[_page * PAGE_COUNT:_page * PAGE_COUNT + PAGE_COUNT]
+    if not result or _page < 0 or _page >= MAX_PAGE:
+        return None, None
 
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        if self.session is not None:
-            await self.session.close()
-
-    async def _create_file(self, data, *args, **kwargs):
-        async with self.session.post(
-                url=APP_URL,
-                headers={},
-                json=data
-        ) as resp:
-            print(await resp.json())
-
-    async def _get_files(self, *args, **kwargs):
-        async with self.session.get(
-                url=f'{APP_URL}',
-        ) as resp:
-            json_response = await resp.json()
-            return json_response
-
-    async def _get_file(self, params, *args, **kwargs):
-        async with self.session.get(
-                url=f'{APP_URL}/{params["name"]}'
-        ) as resp:
-            json_response = await resp.json()
-            return json_response
-
-
-async def get_files():
-    async with AsyncContextManager() as s:
-        return await s._get_files()
-
-
-async def get_file(params):
-    async with AsyncContextManager() as s:
-        return await s._get_file(params)
-
-
-async def create_file(data):
-    async with AsyncContextManager() as s:
-        return await s._create_file(data)
+    return result, _page
 
 
 def exception_handler():

@@ -18,26 +18,30 @@ async def on_startup():
     WEBHOOK_URL = f'{NGROK_URL}/bot/{TOKEN}'
 
     await database.connect()
+
     webhook_info = await bot.get_webhook_info()
-    print(f'{webhook_info.url} === {WEBHOOK_URL}')
     if webhook_info.url != WEBHOOK_URL:
         await bot.set_webhook(
             url=WEBHOOK_URL
         )
+
     await dp.bot.set_my_commands(
         [
             types.BotCommand('start', 'Start bot'),
             types.BotCommand('help', 'Help'),
+            types.BotCommand('files', 'Files'),
+            types.BotCommand('files_menu', 'Files menu'),
         ]
     )
 
+    webhook_info = await bot.get_webhook_info()
     try:
-        await dp.bot.send_message(MY_ID, 'Bot started')
+        if webhook_info.url == WEBHOOK_URL:
+            await dp.bot.send_message(MY_ID, 'Bot started')
+        else:
+            await dp.bot.send_message(MY_ID, 'WebHook is wrong')
     except Exception as e:
         print(f'Something went wrong', e)
-
-    webhook_info = await bot.get_webhook_info()
-    print(f'{webhook_info.url} === {WEBHOOK_URL}')
 
 
 @app.post('/bot/{token:str}', tags=['bot'])

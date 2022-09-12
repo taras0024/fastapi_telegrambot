@@ -135,3 +135,4 @@ dmypy.json
 
 Pipfile
 Pipfile.lock
+dist.py

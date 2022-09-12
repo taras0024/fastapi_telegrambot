@@ -19,3 +19,5 @@ engine = sqlalchemy.create_engine(
     DATABASE_URL
 )
 Base = declarative_base()
+
+PAGE_COUNT = os.getenv('PAGE_COUNT', 3)

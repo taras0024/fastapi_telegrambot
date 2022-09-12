@@ -14,7 +14,10 @@ build:  ## Build docker-compose
 	docker-compose -f ${LOCAL_COMPOSE_FILE} build
 
 up:  ## Up docker-compose
-	docker-compose -f ${LOCAL_COMPOSE_FILE} -p bot up -d
+	docker-compose -f ${LOCAL_COMPOSE_FILE} -p bot up
 
 down:  ## Down docker-compose
 	docker-compose -f ${LOCAL_COMPOSE_FILE} -p bot down --volumes --remove-orphans
+
+sh:  ## Run ipython
+	docker-compose -f ${LOCAL_COMPOSE_FILE} -p bot exec app ipython

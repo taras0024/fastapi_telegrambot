@@ -12,11 +12,7 @@ services:
               ./docker/wait.sh db:5432 -- echo \"db run successfully\" &&
               ./docker/wait.sh ngrok:4040 -- echo \"ngrok run successfully\" &&
               find . -name \*.pyc -delete &&
-              
-              sleep 1 &&
               psql -h db -p 5432 -U postgres -f ./docker/init.sql &&
-              sleep 1 &&
-      
               uvicorn apps.api.main:app --proxy-headers --host 0.0.0.0 --port 8000 --reload
               "
     env_file:
