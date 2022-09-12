@@ -9,10 +9,10 @@ class FileIn(BaseModel):
 
 
 class FileOut(BaseModel):
-    id: int
-    name: str
-    file_id: str
-    created_at: datetime.datetime
+    id: int = None
+    name: str = None
+    file_id: str = None
+    created_at: datetime.datetime = None
 
 
 class Message(BaseModel):

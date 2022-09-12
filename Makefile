@@ -14,7 +14,7 @@ build:  ## Build docker-compose
 	docker-compose -f ${LOCAL_COMPOSE_FILE} build
 
 up:  ## Up docker-compose
-	docker-compose -f ${LOCAL_COMPOSE_FILE} -p bot up
+	docker-compose -f ${LOCAL_COMPOSE_FILE} -p bot up -d
 
 down:  ## Down docker-compose
 	docker-compose -f ${LOCAL_COMPOSE_FILE} -p bot down --volumes --remove-orphans

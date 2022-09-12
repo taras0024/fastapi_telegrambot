@@ -69,9 +69,9 @@ async def create_file(data):
 def exception_handler():
     def wrapper(func):
         @functools.wraps(func)
-        async def wrapped(*args):
+        async def wrapped(*args, **kwargs):
             try:
-                return await func(*args)
+                return await func(*args, **kwargs)
             except Exception as e:
                 print(e)
 

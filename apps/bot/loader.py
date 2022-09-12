@@ -41,23 +41,12 @@ async def file_handler(message: types.Message):
     else:
         await message.reply(f'File `{file_name}`, already exist')
 
-    # file_obj = await bot.get_file(file_id)
-    # file_path = file_obj.file_path
-    # file_io = await bot.download_file_by_id(file_id)
-
 
 @dp.message_handler(commands=['files'])
 @exception_handler()
 async def process_file_command(message: types.Message):
     mark_up = ReplyKeyboardMarkup(resize_keyboard=True)
-
-    # 1 ---
-    # async with AsyncContextManager as s:
-    #     files = await s._get_files()
-
-    # 2 ---
     files = await get_files()
-
     for file in files:
         mark_up.add(KeyboardButton(file['name']))
     await bot.send_message(message.from_user.id, 'Your files: ...', reply_markup=mark_up)

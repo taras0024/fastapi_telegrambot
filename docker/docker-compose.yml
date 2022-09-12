@@ -17,7 +17,7 @@ services:
               psql -h db -p 5432 -U postgres -f ./docker/init.sql &&
               sleep 1 &&
       
-              uvicorn apps.api.main:app --proxy-headers --host 0.0.0.0 --port 8000
+              uvicorn apps.api.main:app --proxy-headers --host 0.0.0.0 --port 8000 --reload
               "
     env_file:
       - .env

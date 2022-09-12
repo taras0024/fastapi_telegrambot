@@ -10,19 +10,17 @@ router = APIRouter(tags=['files'])
 
 
 @router.post('/', response_model=FileOut)
-async def create(r: FileIn):  # = Depends()):
+async def create(r: FileIn):
     query = file_table.insert().values(
         **r.dict()
     )
     record_id = await database.execute(query)
     query = file_table.select().where(file_table.c.id == record_id)
-    # query = register.select().where(register.id == record_id)
     row = await database.fetch_one(query)
     return {**row}
 
 
-# @router.get('/{name}', response_model=FileOut | {})
-@router.get('/{name}')
+@router.get('/{name}', response_model=FileOut | None, response_model_exclude_unset=True)
 async def get_one_by_name(name):
     try:
         query = file_table.select().where(file_table.c.name == name)
