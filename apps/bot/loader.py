@@ -65,6 +65,9 @@ async def process_file_command(message: types.Message):
     await bot.send_message(message.from_user.id, ms.GET_FILES, reply_markup=mark_up)
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#                                               Files Menu
+# ----------------------------------------------------------------------------------------------------------------------
 @dp.message_handler(Command('files_menu'))
 @exception_handler()
 async def files_menu(message: types.Message):
@@ -92,6 +95,9 @@ async def process_callback_pagination(callback: types.CallbackQuery):
     return
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#                                           Echo + Files handler
+# ----------------------------------------------------------------------------------------------------------------------
 @dp.message_handler()
 @exception_handler()
 async def echo_message(message: types.Message):

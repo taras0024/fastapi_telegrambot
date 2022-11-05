@@ -1,3 +1,4 @@
+import aiohttp
 from aiogram import Bot, Dispatcher, types
 from fastapi import FastAPI
 
@@ -14,6 +15,9 @@ Base.metadata.create_all(engine)
 
 @app.on_event('startup')
 async def on_startup():
+    session = aiohttp.ClientSession()
+    await session.close()
+
     NGROK_URL = set_env_ngrok_url()
     WEBHOOK_URL = f'{NGROK_URL}/bot/{TOKEN}'
 

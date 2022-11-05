@@ -15,15 +15,15 @@ def set_env_ngrok_url():
 
 
 def paginate(iterable, _previous=0, _next=0):
-    _count = len(iterable) if iterable else 0
-    _page = _previous + _next
-    MAX_PAGE = _count % PAGE_COUNT and _count // PAGE_COUNT + _count % PAGE_COUNT or _count // PAGE_COUNT
+    items_count = len(iterable) if iterable else 0
+    current_page = _previous + _next
+    max_page = items_count % PAGE_COUNT and items_count // PAGE_COUNT + items_count % PAGE_COUNT or items_count // PAGE_COUNT
 
-    result = iterable and iterable[_page * PAGE_COUNT:_page * PAGE_COUNT + PAGE_COUNT]
-    if not result or _page < 0 or _page >= MAX_PAGE:
-        return None, None
+    result = iterable and iterable[current_page * PAGE_COUNT:current_page * PAGE_COUNT + PAGE_COUNT]
+    if not result or current_page < 0 or current_page >= max_page:
+        return None, current_page
 
-    return result, _page
+    return result, current_page
 
 
 def exception_handler():
